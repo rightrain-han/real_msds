@@ -487,7 +487,7 @@ paths:
           name: type
           schema:
             type: string
-          description: 추가자료 타입으로 필터 (0: 보호장구, 1: 장소, 2: 경고표지)
+          description: "추가자료 타입으로 필터 (0: 보호장구, 1: 장소, 2: 경고표지)"
       responses:
         "200":
           description: 목록 반환
@@ -528,7 +528,7 @@ paths:
                 properties:
                   message:
                     type: string
-                    example: "aid is required"
+                    example: aid is required
 
   /api/msds/additional-info/{aid}:
     put:
@@ -700,7 +700,7 @@ components:
           type: integer
           nullable: true
           example: 0
-          description: 타입 (0: 보호장구, 1: 장소, 2: 경고표지)
+          description: "타입 (0: 보호장구, 1: 장소, 2: 경고표지)"
         file_loc:
           type: string
           nullable: true
@@ -727,7 +727,7 @@ components:
         type:
           type: integer
           example: 0
-          description: 타입 (0: 보호장구, 1: 장소, 2: 경고표지)
+          description: "타입 (0: 보호장구, 1: 장소, 2: 경고표지)"
         file_loc:
           type: string
           nullable: true
@@ -755,7 +755,7 @@ components:
         type:
           type: integer
           nullable: true
-          description: 타입 (0: 보호장구, 1: 장소, 2: 경고표지)
+          description: "타입 (0: 보호장구, 1: 장소, 2: 경고표지)"
         file_loc:
           type: string
           nullable: true
@@ -770,7 +770,7 @@ components:
         type:
           type: integer
           nullable: true
-          description: 타입 (0: 보호장구, 1: 장소, 2: 경고표지)
+          description: "타입 (0: 보호장구, 1: 장소, 2: 경고표지)"
         file_loc:
           type: string
           nullable: true
