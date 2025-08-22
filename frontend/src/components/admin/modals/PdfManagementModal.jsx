@@ -96,6 +96,12 @@ export default function PdfManagementModal({
       }
 
       alert('PDF 파일이 성공적으로 삭제되었습니다.');
+      
+      // MSDS 업데이트 이벤트 발생
+      window.dispatchEvent(new CustomEvent('msdsUpdated', {
+        detail: { mid: msdsItem.mid, action: 'pdfDeleted' }
+      }));
+      
       onPdfUpdated && onPdfUpdated();
       onClose();
     } catch (error) {
@@ -134,6 +140,12 @@ export default function PdfManagementModal({
 
       const result = await response.json();
       alert('PDF 파일이 성공적으로 업로드되었습니다.');
+      
+      // MSDS 업데이트 이벤트 발생
+      window.dispatchEvent(new CustomEvent('msdsUpdated', {
+        detail: { mid: msdsItem.mid, action: 'pdfUploaded', filePath: result.file_path }
+      }));
+      
       onPdfUpdated && onPdfUpdated();
       onClose();
     } catch (error) {

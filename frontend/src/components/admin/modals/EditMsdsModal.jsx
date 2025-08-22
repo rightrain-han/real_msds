@@ -72,6 +72,12 @@ export default function EditMsdsModal({ isOpen, onClose, msds, onSave }) {
     setIsSaving(true);
     try {
       const response = await apiPut(`/api/msds/${msds.mid}`, formData);
+      
+      // MSDS 업데이트 이벤트 발생
+      window.dispatchEvent(new CustomEvent('msdsUpdated', {
+        detail: { mid: msds.mid, action: 'msdsUpdated', data: response.data }
+      }));
+      
       onSave && onSave(response.data);
       onClose();
     } catch (error) {

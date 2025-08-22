@@ -74,15 +74,21 @@ export default function HomePage() {
     const handleMsdsUpdate = (event) => {
       console.log('메인 페이지: MSDS 업데이트 이벤트 감지:', event.detail);
       console.log('메인 페이지: 현재 페이지:', currentPage, '검색어:', searchQuery);
-      // 현재 페이지의 데이터를 다시 로드하여 동기화
-      loadData(currentPage, searchQuery);
+      
+      // 강제로 데이터를 새로고침 (캐시 무시)
+      setTimeout(() => {
+        loadData(currentPage, searchQuery);
+      }, 100); // 약간의 지연을 두어 백엔드 처리 완료 보장
     };
 
     const handleMsdsDelete = (event) => {
       console.log('메인 페이지: MSDS 삭제 이벤트 감지:', event.detail);
       console.log('메인 페이지: 현재 페이지:', currentPage, '검색어:', searchQuery);
-      // 현재 페이지의 데이터를 다시 로드하여 동기화
-      loadData(currentPage, searchQuery);
+      
+      // 강제로 데이터를 새로고침 (캐시 무시)
+      setTimeout(() => {
+        loadData(currentPage, searchQuery);
+      }, 100); // 약간의 지연을 두어 백엔드 처리 완료 보장
     };
 
     // 이벤트 리스너 등록
