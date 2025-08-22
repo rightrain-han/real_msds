@@ -1,0 +1,271 @@
+openapi: 3.0.3
+info:
+  title: MSDS API
+  version: 1.0.0
+  description: MSDS Management System API
+
+servers:
+  - url: http://localhost:5001
+
+paths:
+  /healthz:
+    get:
+      summary: Health check
+      tags:
+        - System
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: ok
+
+  /api/msds:
+    get:
+      summary: Get MSDS list
+      tags:
+        - MSDS
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+            default: 1
+          description: Page number
+        - in: query
+          name: per_page
+          schema:
+            type: integer
+            default: 12
+          description: Items per page
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/MSDS"
+                  page:
+                    type: integer
+                  per_page:
+                    type: integer
+                  total:
+                    type: integer
+    post:
+      summary: Create MSDS
+      tags:
+        - MSDS
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MSDSCreate"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+
+  /api/msds/{mid}:
+    get:
+      summary: Get MSDS detail
+      tags:
+        - MSDS
+      parameters:
+        - in: path
+          name: mid
+          required: true
+          schema:
+            type: string
+          description: MSDS ID
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MSDSDetail"
+        "404":
+          description: Not found
+    put:
+      summary: Update MSDS
+      tags:
+        - MSDS
+      parameters:
+        - in: path
+          name: mid
+          required: true
+          schema:
+            type: string
+          description: MSDS ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MSDSUpdate"
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+    delete:
+      summary: Delete MSDS
+      tags:
+        - MSDS
+      parameters:
+        - in: path
+          name: mid
+          required: true
+          schema:
+            type: string
+          description: MSDS ID
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+
+components:
+  schemas:
+    MSDS:
+      type: object
+      properties:
+        mid:
+          type: string
+          description: MSDS ID
+        title:
+          type: string
+          description: MSDS title
+        usage:
+          type: string
+          nullable: true
+          description: Usage
+        file_loc:
+          type: string
+          nullable: true
+          description: PDF file path
+        is_osh:
+          type: integer
+          enum: [0, 1]
+          description: OSH law applicable
+        is_chr:
+          type: integer
+          enum: [0, 1]
+          description: Chemical law applicable
+
+    MSDSDetail:
+      allOf:
+        - $ref: "#/components/schemas/MSDS"
+        - type: object
+          properties:
+            attachments:
+              type: array
+              items:
+                $ref: "#/components/schemas/Attachment"
+              description: Attachment list
+
+    MSDSCreate:
+      type: object
+      required: [mid, title]
+      properties:
+        mid:
+          type: string
+          description: MSDS ID
+        title:
+          type: string
+          description: MSDS title
+        usage:
+          type: string
+          nullable: true
+          description: Usage
+        file_loc:
+          type: string
+          nullable: true
+          description: PDF file path
+        is_osh:
+          type: integer
+          enum: [0, 1]
+          default: 0
+          description: OSH law applicable
+        is_chr:
+          type: integer
+          enum: [0, 1]
+          default: 0
+          description: Chemical law applicable
+
+    MSDSUpdate:
+      type: object
+      properties:
+        title:
+          type: string
+          description: MSDS title
+        usage:
+          type: string
+          nullable: true
+          description: Usage
+        file_loc:
+          type: string
+          nullable: true
+          description: PDF file path
+        is_osh:
+          type: integer
+          enum: [0, 1]
+          description: OSH law applicable
+        is_chr:
+          type: integer
+          enum: [0, 1]
+          description: Chemical law applicable
+
+    Attachment:
+      type: object
+      properties:
+        aid:
+          type: string
+          description: Additional info ID
+        title:
+          type: string
+          description: Additional info title
+        type:
+          type: integer
+          description: Type (0: protective, 1: location, 2: warning)
+        file_loc:
+          type: string
+          nullable: true
+          description: File path
+        createdAt:
+          type: string
+          format: date-time
+          description: Created date
+
+tags:
+  - name: System
+    description: System APIs
+  - name: MSDS
+    description: MSDS CRUD operations
